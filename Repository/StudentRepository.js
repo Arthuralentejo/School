@@ -24,22 +24,43 @@ class StudentRepository {
     }
     createTable(){
         this.connectDb()
-        let createTable = `CREATE TABLE IF NOT EXISTS alunos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
-            idade INTEGER,
-            turma TEXT
-            )`
+        let createTable = `CREATE TABLE IF NOT EXISTS students (
+               id INTEGER PRIMARY KEY AUTOINCREMENT,
+               name TEXT,
+               age INTEGER,
+               school_class TEXT
+           )`
         this.db.run(createTable)
         this.closeDB()
     }
 
-    insert(){
-
+    insert(student){
+        this.connectDb()
+        let query = `INSERT INTO students (name,age,school_class) VALUES (?,?,?)`
+        let args = [
+            student.name,
+            student.age,
+            student.schoolClass
+        ]
+        let dbReturn =  this.db.run(query,args,(err)=>{
+            if(err){
+                return err.message
+            }
+            return `The student ${student.name} has been inserted.`
+        })
+        this.closeDB()
+        return dbReturn
     }
 
     getALl(){
+        this.connectDb()
+        let query = `SELECT * FROM students`
 
+
+
+
+
+        this.closeDB()
     }
 
     getById(){

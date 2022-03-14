@@ -1,4 +1,4 @@
-const routes = require("./routes/StudentRoutes")
+const routes = require("./routes/Routes")
 
 const express = require('express')
 const app = express()
