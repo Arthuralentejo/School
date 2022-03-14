@@ -1,7 +1,7 @@
 const sqlite = require('sqlite3').verbose()
 
 
-class AlunoRepository {
+class StudentRepository {
     private db
     constructor() {
         this.createTable()

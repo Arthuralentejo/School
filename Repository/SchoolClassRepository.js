@@ -1,7 +1,7 @@
 const sqlite = require('sqlite3').verbose()
 
 
-class TurmaRepository {
+class SchoolClassRepository {
     private db
     constructor() {
         this.createTable()
@@ -24,11 +24,11 @@ class TurmaRepository {
     }
     createTable(){
         this.connectDb()
-        let createTable = `CREATE TABLE IF NOT EXISTS alunos (
+        let createTable = `CREATE TABLE IF NOT EXISTS students (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
-            idade INTEGER,
-            turma TEXT
+            name TEXT,
+            age INTEGER,
+            schoolClass TEXT
             )`
         this.db.run(createTable)
         this.closeDB()

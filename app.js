@@ -1,10 +1,10 @@
-const routes = require("./routes/AlunoRoutes")
+const routes = require("./routes/StudentRoutes")
 
 const express = require('express')
 const app = express()
 
 
-app.use('/alunos', routes)
+app.use('/student', routes)
 
 app.use((req, res, next) => {
   const error = new Error('Resource not found')
@@ -19,5 +19,5 @@ app.use((error, req, res) => {
   })
 })
 app.listen(3000, () => {
-  console.log(`Servidor rodando na porta 3000`)
+  console.log(`Server running on port 3000`)
 })

@@ -1,4 +1,4 @@
-class AlunoController {
+class StudentController {
     get (req,res){
 
         res.send("Ola mundo")
@@ -15,4 +15,4 @@ class AlunoController {
 
 }
 
-module.exports = AlunoController
+module.exports = StudentController
