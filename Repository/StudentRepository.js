@@ -46,14 +46,14 @@ class StudentRepository {
         return dbReturn
     }
 
-    async getALl() {
+    async getAll() {
         const db = await this.connectDb()
         let students = []
         let query = `SELECT *
                      FROM students ORDER BY id`
         const rows = await db.all(query)
         rows.forEach((row)=>{
-            students.push(new Student(row.name,row.age,row.school_class))
+            students.push(row)
         })
         await db.close()
         return students
@@ -64,7 +64,7 @@ class StudentRepository {
         let query = `SELECT *
                      FROM students WHERE id = ? ORDER BY id`
         const result = await db.get(query,id)
-        console.log(result)
+        await  db.close()
         return result
     }
 

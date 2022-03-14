@@ -8,11 +8,11 @@ class StudentController {
 
     async get(req, res) {
         if (req.query.id){
-            let student = await repository.getById();
+            let student = await repository.getById(req.query.id);
             return res.status(200).json(student)
         }
         console.log("não")
-        let students = await repository.getALl();
+        let students = await repository.getAll();
         res.status(200).json({"Students" : students})
     }
 
