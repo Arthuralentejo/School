@@ -1,35 +1,37 @@
 const sqlite = require('sqlite3').verbose()
 
-
 class StudentRepository {
-    private db
+    db;
+
     constructor() {
         this.createTable()
     }
-    private connectDb(){
+
+    connectDb() {
         this.db = new sqlite.Database('school.db', (err) => {
             if (err) {
                 return console.error(err.message);
             }
-            console.log('Connected to the SQlite database.');
         })
     }
-    private closeDB(){
+
+    closeDB() {
         this.db.close((err) => {
             if (err) {
                 return console.error(err.message);
             }
-            console.log('Close the database connection.');
         });
     }
-    createTable(){
+
+    createTable() {
         this.connectDb()
-        let createTable = `CREATE TABLE IF NOT EXISTS students (
-               id INTEGER PRIMARY KEY AUTOINCREMENT,
-               name TEXT,
-               age INTEGER,
-               school_class TEXT
-           )`
+        let createTable = `CREATE TABLE IF NOT EXISTS students
+                           (
+                               id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                               name         TEXT,
+                               age          INTEGER,
+                               school_class TEXT
+                           )`
         this.db.run(createTable)
         this.closeDB()
     }
@@ -52,26 +54,33 @@ class StudentRepository {
         return dbReturn
     }
 
-    getALl(){
+    getALl() {
         this.connectDb()
-        let query = `SELECT * FROM students`
+        let query = `SELECT *
+                     FROM students`
+        let students = this.db.all(query, [], (err, rows) => {
+            if (err) {
+                return err.message
+            }
+        });
 
-
-
-
+        console.log(students)
 
         this.closeDB()
+        return students
     }
 
     getById(){
 
     }
 
-    update(){
+    update() {
 
     }
 
-    delete(){
+    delete() {
 
     }
 }
+
+module.exports = StudentRepository

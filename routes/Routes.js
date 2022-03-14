@@ -1,8 +1,7 @@
-const { Router } = require('express')
+const {Router} = require('express')
 const router = Router()
-const Controller = require('../controllers/StudentController')
-const studentController = new Controller()
-
+const StudentController = require('../controllers/StudentController')
+const studentController = new StudentController()
 
 router.post('/insert', studentController.post)
 router.get('/get', studentController.get)
