@@ -6,18 +6,20 @@ class StudentController {
     constructor() {
     }
 
-    get(req, res) {
-        let students = repository.getALl();
-        res.status(200).json({
-            "students": students
-        })
+    async get(req, res) {
+        if (req.query.id){
+            let student = await repository.getById();
+            return res.status(200).json(student)
+        }
+        console.log("não")
+        let students = await repository.getALl();
+        res.status(200).json({"Students" : students})
     }
 
     post(req, res) {
         let {name, age, school_class} = req.body
         let student = new Student(name, age, school_class)
-
-        repository.insert(student)
+        let ret = repository.insert(student)
         res.status(201).json({
             "Message": ret
         })

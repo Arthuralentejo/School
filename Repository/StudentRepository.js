@@ -1,30 +1,22 @@
 const sqlite = require('sqlite3').verbose()
+const { open } = require("sqlite")
+const Student = require("../Repository/model/Student")
+
+
+
 
 class StudentRepository {
-    db;
-
     constructor() {
         this.createTable()
     }
-
-    connectDb() {
-        this.db = new sqlite.Database('school.db', (err) => {
-            if (err) {
-                return console.error(err.message);
-            }
+    async connectDb () {
+        return open({
+            filename: 'school.db',
+            driver: sqlite.Database
         })
     }
-
-    closeDB() {
-        this.db.close((err) => {
-            if (err) {
-                return console.error(err.message);
-            }
-        });
-    }
-
-    createTable() {
-        this.connectDb()
+    async createTable() {
+        const db = await this.connectDb()
         let createTable = `CREATE TABLE IF NOT EXISTS students
                            (
                                id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,8 +24,8 @@ class StudentRepository {
                                age          INTEGER,
                                school_class TEXT
                            )`
-        this.db.run(createTable)
-        this.closeDB()
+        await db.run(createTable)
+        await db.close()
     }
 
     insert(student){
@@ -54,24 +46,26 @@ class StudentRepository {
         return dbReturn
     }
 
-    getALl() {
-        this.connectDb()
+    async getALl() {
+        const db = await this.connectDb()
+        let students = []
         let query = `SELECT *
-                     FROM students`
-        let students = this.db.all(query, [], (err, rows) => {
-            if (err) {
-                return err.message
-            }
-        });
-
-        console.log(students)
-
-        this.closeDB()
+                     FROM students ORDER BY id`
+        const rows = await db.all(query)
+        rows.forEach((row)=>{
+            students.push(new Student(row.name,row.age,row.school_class))
+        })
+        await db.close()
         return students
     }
 
-    getById(){
-
+    async getById(id){
+        const db = await this.connectDb()
+        let query = `SELECT *
+                     FROM students WHERE id = ? ORDER BY id`
+        const result = await db.get(query,id)
+        console.log(result)
+        return result
     }
 
     update() {
