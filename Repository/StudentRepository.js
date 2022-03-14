@@ -1,6 +1,5 @@
 const sqlite = require('sqlite3').verbose()
 const { open } = require("sqlite")
-const Student = require("../Repository/model/Student")
 
 
 
@@ -28,22 +27,17 @@ class StudentRepository {
         await db.close()
     }
 
-    insert(student){
-        this.connectDb()
+    async insert(student){
+        const db = await this.connectDb()
         let query = `INSERT INTO students (name,age,school_class) VALUES (?,?,?)`
         let args = [
             student.name,
             student.age,
-            student.schoolClass
+            student.school_class
         ]
-        let dbReturn =  this.db.run(query,args,(err)=>{
-            if(err){
-                return err.message
-            }
-            return `The student ${student.name} has been inserted.`
-        })
-        this.closeDB()
-        return dbReturn
+        let dbReturn =  await db.run(query,args)
+        await db.close()
+        return dbReturn.lastID
     }
 
     async getAll() {
@@ -68,12 +62,29 @@ class StudentRepository {
         return result
     }
 
-    update() {
-
+    async update(student) {
+        const db = await this.connectDb()
+        let query = `UPDATE students 
+                        SET name = ?, age = ?, school_class = ?
+                        WHERE id = ?`
+        let args = [
+            student.name,
+            student.age,
+            student.school_class,
+            student.id
+        ]
+        // WHat if id doesnt exists?
+        let dbReturn =  await db.run(query,args)
+        await db.close()
+        return dbReturn
     }
 
-    delete() {
-
+    async delete(id) {
+        const db = await this.connectDb()
+        const query = `DELETE FROM students WHERE id = ?`
+        const dbReturn = await db.run(query,id)
+        await db.close()
+        return dbReturn
     }
 }
 
