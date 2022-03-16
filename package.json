@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
+    "morgan": "^1.10.0",
     "sqlite": "^4.0.25",
     "sqlite3": "^5.0.2"
   },

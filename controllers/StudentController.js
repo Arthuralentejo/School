@@ -5,39 +5,25 @@ class StudentController {
 
     async get(req, res) {
 
-        //Verifica se existe o atributo id na URL
+        //Verifica se zexiste o atributo id na URL
         if (req.query.id){
-            let student = await repository.getById(req.query.id);
-
-            //Se nenhum estudante com esse id for encontrado retornar mensagem para o Usuario
-            if (!students){
-                return res.status(404).json({
-                    "Message": "Student not found"
-                })
-            }
+            const student = await repository.getById(req.query.id);
             return res.status(200).json(student)
         }
 
         let students = await repository.getAll();
-
-        //Informar ao Client caso nnhum estudante seja encontrado
-        if (!students){
-            return res.status(204).json({
-                "Message": "No registered student yet"
-            })
-        }
         return res.status(200).json({"Students" : students})
     }
 
     async post(req, res) {
-        if(!req.body.includes(name) && !req.body.includes(age) && !req.body.includes(school_class) ){
-            return res.status(400).json({
-                "Message": "No valid data provided"
-            })
+        const student = {
+            name: req.body.name,
+            age: req.body.age,
+            shcool_class: req.body.school_classb
         }
-        let insertedID = await repository.insert(req.body)
+        let insertedID = await repository.insert(student)
         res.status(201).json({
-            "Message": `Student ${req.body.name} inserted with de id:  ${insertedID}`
+            "Message": `Student ${student.name} inserted with de id:  ${insertedID}`
         })
     }
 

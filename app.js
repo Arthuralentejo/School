@@ -1,12 +1,12 @@
 const routes = require("./routes/Routes")
-
+const morgan = require('morgan')
 const express = require('express')
 const app = express()
 
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-
+app.use(morgan('combined'))
 app.use('/student', routes)
 
 app.use((req, res, next) => {

@@ -59,7 +59,7 @@ class StudentRepository {
                      FROM students WHERE id = ? ORDER BY id`
         const result = await db.get(query,id)
         await  db.close()
-        return result
+        return result ? result : false
     }
 
     async update(student) {
